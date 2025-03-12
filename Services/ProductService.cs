@@ -1,19 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ProvaPub.Interfaces;
 using ProvaPub.Models;
 using ProvaPub.Repository;
 
 namespace ProvaPub.Services
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
-        TestDbContext _ctx;
-
-        public ProductService(TestDbContext ctx)
-        {
-            _ctx = ctx;
-        }
-
-        public ProductList ListProducts(int pageIndex)
+        public BaseDto<Product> ListProducts(int pageIndex, TestDbContext _ctx)
         {
             const int pageSize = 10;
 
@@ -24,7 +17,7 @@ namespace ProvaPub.Services
 
             var hasNext = pageIndex < totalPages;
 
-            return new ProductList() { HasNext = hasNext, TotalCount = totalPages, Products = products.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList() };
+            return new BaseDto<Product>() { HasNext = hasNext, TotalCount = totalPages, List = products.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList() };
         }
     }
 }
