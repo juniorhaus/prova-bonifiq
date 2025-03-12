@@ -8,7 +8,7 @@ namespace ProvaPub.Services
     {
         int seed;
         TestDbContext _ctx;
-        private static Random ramdom;
+        private static Random random;
 
         public RandomService()
         {
@@ -19,11 +19,11 @@ namespace ProvaPub.Services
 
             _ctx = new TestDbContext(contextOptions);
 
-            ramdom = new Random(seed);
+            random = new Random(seed);
         }
         public async Task<int> GetRandom()
         {
-            var number = ramdom.Next(100);
+            var number = random.Next(100);
             _ctx.Numbers.Add(new RandomNumber() { Number = number });
             _ctx.SaveChanges();
 
