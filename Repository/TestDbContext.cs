@@ -20,8 +20,8 @@ namespace ProvaPub.Repository
 			modelBuilder.Entity<Customer>().HasData(getCustomerSeed());
 			modelBuilder.Entity<Product>().HasData(getProductSeed());
 
-			modelBuilder.Entity<RandomNumber>().HasIndex(s => s.Number).IsUnique();
-		}
+            modelBuilder.Entity<RandomNumber>().HasIndex(s => new { s.Id, s.Number }).IsUnique();
+        }
 
 		private Customer[] getCustomerSeed()
 		{
