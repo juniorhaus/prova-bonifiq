@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProvaPub.Interfaces;
 using ProvaPub.Models;
+using ProvaPub.NovaPasta;
 using ProvaPub.Repository;
 
 namespace ProvaPub.Services
@@ -16,7 +17,9 @@ namespace ProvaPub.Services
 
         BaseDto<Customer> ICustomerService.ListCustomers(int page, TestDbContext _ctx)
         {
-            return new BaseDto<Customer>(){ HasNext = false, TotalCount = 10, List = _ctx.Customers.ToList() };
+            var list = Utils.GenericPagination(page, _ctx.Customers.ToList());
+
+            return new BaseDto<Customer>() { HasNext = list.Item2, TotalCount = 10, List = list.Item1 };
         }
 
         public async Task<bool> CanPurchase(int customerId, decimal purchaseValue)
@@ -47,6 +50,6 @@ namespace ProvaPub.Services
 
             return true;
         }
-        
+
     }
 }

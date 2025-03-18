@@ -1,5 +1,6 @@
 ﻿using ProvaPub.Interfaces;
 using ProvaPub.Models;
+using ProvaPub.NovaPasta;
 using ProvaPub.Repository;
 
 namespace ProvaPub.Services
@@ -8,16 +9,11 @@ namespace ProvaPub.Services
     {
         public BaseDto<Product> ListProducts(int pageIndex, TestDbContext _ctx)
         {
-            const int pageSize = 10;
+            var list = Utils.GenericPagination(pageIndex, _ctx.Products.ToList());
 
-            var products = _ctx.Products;
-
-            var count = products.Count();
-            var totalPages = (int)Math.Ceiling(count / (double)pageSize);
-
-            var hasNext = pageIndex < totalPages;
-
-            return new BaseDto<Product>() { HasNext = hasNext, TotalCount = totalPages, List = products.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList() };
+            return new BaseDto<Product>() { HasNext = list.Item2, TotalCount = 10, List = list.Item1 };
         }
     }
 }
+
+
